@@ -19,11 +19,11 @@
 }
 
 .custom-next-arrow {
-  right: -20px; /* Adjust as needed */
+  right: -20px; 
 }
 
 .custom-prev-arrow {
-  left: -20px; /* Adjust as needed */
+  left: -20px; 
 }
 
 .custom-next-arrow:hover,
@@ -33,32 +33,32 @@
 }
 
 .slick-slider .slick-list {
-  margin: 0 -10px; /* Ensure proper spacing between slides */
+  margin: 0 -10px; 
 }
 
 .slick-slider .slick-slide {
-  padding: 0 5px; /* Adjust padding between slides */
+  padding: 0 5px; 
 }
 
 .custom-next-arrow i,
 .custom-prev-arrow i {
-  font-size: 16px; /* Size of the chevron icon */
-  color: #333; /* Icon color */
-  line-height: unset; /* Reset default FontAwesome line-height */
-  margin: 0; /* Remove any unwanted margins */
-  padding: 0; /* Remove any unwanted padding */
-  position: relative; /* Ensures icon aligns correctly */
-  display: block; /* Forces the icon to act like a block element */
+  font-size: 16px; 
+  color: #333; 
+  line-height: unset; 
+  margin: 0; 
+  padding: 0; 
+  position: relative; 
+  display: block; 
 }
 
 .custom-next-arrow i {
-  top: 0; /* Reset any offset on the icon */
-  left: -8px; /* Reset any offset on the icon */
+  top: 0; 
+  left: -8px; 
 }
 
 .custom-prev-arrow i {
-    top: 0; /* Reset any offset on the icon */
-    left: -10px; /* Reset any offset on the icon */
+    top: 0; 
+    left: -10px; 
   }
 
   .skeleton {

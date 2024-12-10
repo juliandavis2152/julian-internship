@@ -26,7 +26,6 @@ const HotCollections = () => {
     fetchCollections();
   }, []);
 
-  // Custom Arrow Components
   const NextArrow = (props) => {
     const { className, onClick } = props;
     return (
