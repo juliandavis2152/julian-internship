@@ -12,7 +12,6 @@ const AuthorItems = ({ authorData }) => {
               key={item.id}
             >
               <div className="nft__item">
-                {/* Author Section */}
                 <div className="author_list_pp">
                   <Link to={`/author/${authorData.authorId}`}>
                     <img
@@ -23,7 +22,6 @@ const AuthorItems = ({ authorData }) => {
                     <i className="fa fa-check"></i>
                   </Link>
                 </div>
-                {/* NFT Image */}
                 <div className="nft__item_wrap">
                   <div className="nft__item_extra">
                     <div className="nft__item_buttons">
@@ -60,7 +58,6 @@ const AuthorItems = ({ authorData }) => {
                     />
                   </Link>
                 </div>
-                {/* NFT Info */}
                 <div className="nft__item_info">
                   <Link to={`/item-details/${item.nftId}`}>
                     <h4>{item.title}</h4>

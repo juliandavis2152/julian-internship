@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Skeleton from "react-loading-skeleton"; // Import the skeleton component
-import "react-loading-skeleton/dist/skeleton.css"; // Import skeleton styles
+import Skeleton from "react-loading-skeleton"; 
+import "react-loading-skeleton/dist/skeleton.css"; 
 import AuthorItems from "../components/author/AuthorItems";
 import AuthorBanner from "../images/author_banner.jpg";
 
 const Author = () => {
-  const { id } = useParams(); // Get the dynamic ID from the URL
+  const { id } = useParams(); 
   const [authorData, setAuthorData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isFollowing, setIsFollowing] = useState(false); // Track follow state
+  const [isFollowing, setIsFollowing] = useState(false); 
 
   useEffect(() => {
     const fetchAuthorData = async () => {
@@ -27,7 +27,7 @@ const Author = () => {
     };
 
     if (id) {
-      fetchAuthorData(); // Fetch data only if ID is present
+      fetchAuthorData(); 
     }
   }, [id]);
 
@@ -36,17 +36,15 @@ const Author = () => {
       ...prev,
       followers: isFollowing ? prev.followers - 1 : prev.followers + 1,
     }));
-    setIsFollowing(!isFollowing); // Toggle follow state
+    setIsFollowing(!isFollowing); 
   };
 
   if (loading) {
-    // Skeleton placeholders for the loading state
     return (
       <div id="wrapper">
         <div className="no-bottom no-top" id="content">
           <div id="top"></div>
 
-          {/* Skeleton for banner */}
           <section
             id="profile_banner"
             aria-label="section"
@@ -58,7 +56,6 @@ const Author = () => {
           <section aria-label="section">
             <div className="container">
               <div className="row">
-                {/* Skeleton for profile */}
                 <div className="col-md-12">
                   <div className="d_profile de-flex">
                     <div className="de-flex-col">
@@ -87,8 +84,7 @@ const Author = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Skeleton for NFT collection */}
+                
                 <div className="col-md-12">
                   <div className="de_tab tab_simple">
                     <div className="row">
@@ -129,7 +125,6 @@ const Author = () => {
         <section aria-label="section">
           <div className="container">
             <div className="row">
-              {/* Profile Section */}
               <div className="col-md-12">
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
@@ -171,7 +166,6 @@ const Author = () => {
                 </div>
               </div>
 
-              {/* NFT Collection */}
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
                   <AuthorItems authorData={authorData} />
