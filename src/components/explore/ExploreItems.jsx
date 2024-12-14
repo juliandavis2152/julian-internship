@@ -7,10 +7,11 @@ const ExploreItems = () => {
   const [timeLeft, setTimeLeft] = useState({});
   const [itemsToShow, setItemsToShow] = useState(8);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState(""); 
+  const [filter, setFilter] = useState("");
 
+  // Fetch data based on the current filter
   const fetchData = async (filterOption) => {
-    setLoading(true);
+    setLoading(true); // Set loading to true before fetching
     let apiUrl = "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
     if (filterOption) {
       apiUrl += `?filter=${filterOption}`;
@@ -19,18 +20,20 @@ const ExploreItems = () => {
     try {
       const response = await fetch(apiUrl);
       const result = await response.json();
-      setData(result);
+      setData(result); // Update the data state
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Ensure loading is set to false after data is fetched
     }
   };
 
+  // Trigger fetchData whenever the filter changes
   useEffect(() => {
-    fetchData(filter); 
+    fetchData(filter);
   }, [filter]);
 
+  // Set countdown timers for items
   useEffect(() => {
     if (!loading) {
       const interval = setInterval(() => {
@@ -46,6 +49,7 @@ const ExploreItems = () => {
     }
   }, [data, loading]);
 
+  // Helper function to calculate time left for each item
   const calculateTimeLeft = (time) => {
     const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((time / (1000 * 60)) % 60);
@@ -53,15 +57,19 @@ const ExploreItems = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
+  // Load more items
   const loadMoreItems = () => {
     setItemsToShow((prev) => prev + 4);
   };
 
+  // Handle filter changes
   const handleFilterChange = (event) => {
-    setFilter(event.target.value); // Update filter state
-    setItemsToShow(8); // Reset visible items on filter change
+    const newFilter = event.target.value;
+    setFilter(newFilter); // Update the filter state
+    setItemsToShow(8); // Reset items to show on filter change
   };
 
+  // Skeleton loader for when data is still loading
   const SkeletonLoader = () => (
     <div className="nft__item skeleton-card">
       <div className="skeleton skeleton-image"></div>
@@ -70,6 +78,7 @@ const ExploreItems = () => {
     </div>
   );
 
+  // Render loading skeletons if still loading
   if (loading) {
     return (
       <div className="row">
@@ -89,7 +98,7 @@ const ExploreItems = () => {
   return (
     <>
       <div>
-        <select id="filter-items" defaultValue="" onChange={handleFilterChange}>
+        <select id="filter-items" value={filter} onChange={handleFilterChange}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
@@ -97,6 +106,7 @@ const ExploreItems = () => {
         </select>
       </div>
 
+      {/* Display the filtered items */}
       {data.slice(0, itemsToShow).map((item) => (
         <div
           key={item.id}
