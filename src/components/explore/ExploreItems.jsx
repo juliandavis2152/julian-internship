@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -98,6 +99,7 @@ const ExploreItems = () => {
     <>
       <div>
         <select id="filter-items" value={filter} onChange={handleFilterChange}>
+        <select id="filter-items" value={filter} onChange={handleFilterChange}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
@@ -108,6 +110,7 @@ const ExploreItems = () => {
       {data.slice(0, itemsToShow).map((item, index) => (
         <div
           key={item.id}
+          key={item.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
           style={{ display: "block", backgroundSize: "cover" }}
           data-aos="fade"
@@ -115,6 +118,7 @@ const ExploreItems = () => {
           <div className="nft__item">
             <div className="author_list_pp">
               <Link
+                to={`/author/${item.authorId}`}
                 to={`/author/${item.authorId}`}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
@@ -124,8 +128,16 @@ const ExploreItems = () => {
                   src={item.authorImage}
                   alt={`Author ${item.authorId}`}
                 />
+                <img
+                  className="lazy"
+                  src={item.authorImage}
+                  alt={`Author ${item.authorId}`}
+                />
                 <i className="fa fa-check"></i>
               </Link>
+            </div>
+            <div className="de_countdown">
+              {timeLeft[item.id] || "Calculating..."}
             </div>
             <div className="de_countdown">
               {timeLeft[item.id] || "Calculating..."}
@@ -155,15 +167,25 @@ const ExploreItems = () => {
                   className="lazy nft__item_preview"
                   alt={item.title}
                 />
+              <Link to={`/item-details/${item.nftId}`}>
+                <img
+                  src={item.nftImage}
+                  className="lazy nft__item_preview"
+                  alt={item.title}
+                />
               </Link>
             </div>
             <div className="nft__item_info">
               <Link to={`/item-details/${item.nftId}`}>
                 <h4>{item.title}</h4>
+              <Link to={`/item-details/${item.nftId}`}>
+                <h4>{item.title}</h4>
               </Link>
+              <div className="nft__item_price">{item.price} ETH</div>
               <div className="nft__item_price">{item.price} ETH</div>
               <div className="nft__item_like">
                 <i className="fa fa-heart"></i>
+                <span>{item.likes}</span>
                 <span>{item.likes}</span>
               </div>
             </div>
