@@ -99,7 +99,6 @@ const ExploreItems = () => {
     <>
       <div>
         <select id="filter-items" value={filter} onChange={handleFilterChange}>
-        <select id="filter-items" value={filter} onChange={handleFilterChange}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
@@ -110,7 +109,6 @@ const ExploreItems = () => {
       {data.slice(0, itemsToShow).map((item, index) => (
         <div
           key={item.id}
-          key={item.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
           style={{ display: "block", backgroundSize: "cover" }}
           data-aos="fade"
@@ -118,7 +116,6 @@ const ExploreItems = () => {
           <div className="nft__item">
             <div className="author_list_pp">
               <Link
-                to={`/author/${item.authorId}`}
                 to={`/author/${item.authorId}`}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
@@ -167,17 +164,9 @@ const ExploreItems = () => {
                   className="lazy nft__item_preview"
                   alt={item.title}
                 />
-              <Link to={`/item-details/${item.nftId}`}>
-                <img
-                  src={item.nftImage}
-                  className="lazy nft__item_preview"
-                  alt={item.title}
-                />
               </Link>
             </div>
             <div className="nft__item_info">
-              <Link to={`/item-details/${item.nftId}`}>
-                <h4>{item.title}</h4>
               <Link to={`/item-details/${item.nftId}`}>
                 <h4>{item.title}</h4>
               </Link>
