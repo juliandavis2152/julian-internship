@@ -10,13 +10,12 @@ const Explore = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Fetch data from API
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
         );
-        setItems(response.data); // Update state with fetched data
+        setItems(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
