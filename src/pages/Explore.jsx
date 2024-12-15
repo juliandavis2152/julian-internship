@@ -4,26 +4,26 @@ import SubHeader from "../images/subheader.jpg";
 import ExploreItems from "../components/explore/ExploreItems";
 
 const Explore = () => {
-  const [items, setItems] = useState([]);
+  const [exploreData, setExploreData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const fetchData = async () => {
+    const fetchExploreData = async () => {
       try {
         const response = await axios.get(
           "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
         );
-        setItems(response.data);
+        setExploreData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching explore data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchExploreData();
   }, []);
 
   return (
@@ -52,11 +52,9 @@ const Explore = () => {
           <div className="container">
             <div className="row">
               {loading ? (
-                <div className="col-md-12 text-center">
-                  <p>Loading...</p>
-                </div>
+                <p>Loading...</p>
               ) : (
-                <ExploreItems items={items} />
+                <ExploreItems data={exploreData} />
               )}
             </div>
           </div>

@@ -1,18 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "./ExploreItems.css";
 
-const ExploreItems = ({ items }) => {
+const ExploreItems = () => {
+  const [data, setData] = useState([]);
+  const [timeLeft, setTimeLeft] = useState({});
+  const [itemsToShow, setItemsToShow] = useState(8);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
+
+  const fetchData = async (filterOption) => {
+    setLoading(true); 
+    let apiUrl = "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
+    if (filterOption) {
+      apiUrl += `?filter=${filterOption}`;
+    }
+
+    try {
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+      setData(result); 
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); 
+    }
+  };
+
+  useEffect(() => {
+    fetchData(filter);
+  }, [filter]);
+
+  useEffect(() => {
+    if (!loading) {
+      const interval = setInterval(() => {
+        const updatedTimeLeft = data.reduce((acc, item) => {
+          const remainingTime = item.expiryDate - new Date().getTime();
+          acc[item.id] = remainingTime > 0 ? calculateTimeLeft(remainingTime) : "Expired";
+          return acc;
+        }, {});
+        setTimeLeft(updatedTimeLeft);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [data, loading]);
+
+  const calculateTimeLeft = (time) => {
+    const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((time / (1000 * 60)) % 60);
+    const seconds = Math.floor((time / 1000) % 60);
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
+
+  const loadMoreItems = () => {
+    setItemsToShow((prev) => prev + 4);
+  };
+
+  const handleFilterChange = (event) => {
+    const newFilter = event.target.value;
+    setFilter(newFilter); 
+    setItemsToShow(8); 
+  };
+
+  const SkeletonLoader = () => (
+    <div className="nft__item skeleton-card">
+      <div className="skeleton skeleton-image"></div>
+      <div className="skeleton skeleton-title"></div>
+      <div className="skeleton skeleton-subtitle"></div>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="row">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div
+            key={index}
+            className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
+            style={{ display: "block", backgroundSize: "cover" }}
+          >
+            <SkeletonLoader />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
       <div>
-        <select id="filter-items" defaultValue="">
+        <select id="filter-items" value={filter} onChange={handleFilterChange}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-      {items.map((item) => (
+
+      {data.slice(0, itemsToShow).map((item) => (
         <div
           key={item.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
@@ -34,7 +120,7 @@ const ExploreItems = ({ items }) => {
               </Link>
             </div>
             <div className="de_countdown">
-              {new Date(item.expiryDate).toLocaleTimeString()} left
+              {timeLeft[item.id] || "Calculating..."}
             </div>
 
             <div className="nft__item_wrap">
@@ -76,11 +162,17 @@ const ExploreItems = ({ items }) => {
           </div>
         </div>
       ))}
-      <div className="col-md-12 text-center">
-        <Link to="" id="loadmore" className="btn-main lead">
-          Load more
-        </Link>
-      </div>
+      {itemsToShow < data.length && (
+        <div className="col-md-12 text-center">
+          <button
+            id="loadmore"
+            className="btn-main lead"
+            onClick={loadMoreItems}
+          >
+            Load more
+          </button>
+        </div>
+      )}
     </>
   );
 };
