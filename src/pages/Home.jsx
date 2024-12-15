@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import BrowseByCategory from "../components/home/BrowseByCategory";
 import HotCollections from "../components/home/HotCollections";
 import Landing from "../components/home/Landing";
@@ -8,6 +11,7 @@ import TopSellers from "../components/home/TopSellers";
 
 const Home = () => {
   useEffect(() => {
+    AOS.init({ duration: 1000 }); 
     window.scrollTo(0, 0);
   }, []);
 
@@ -15,12 +19,22 @@ const Home = () => {
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
-        <Landing />
-        <LandingIntro />
-        <HotCollections />
-        <NewItems />
-        <TopSellers />
-        <BrowseByCategory />
+          <Landing />
+        <div data-aos="fade-down">
+          <LandingIntro />
+        </div>
+        <div data-aos="fade-down">
+          <HotCollections />
+        </div>
+        <div data-aos="fade-down">
+          <NewItems />
+        </div>
+        <div data-aos="fade-down">
+          <TopSellers />
+        </div>
+        <div data-aos="fade-left">
+          <BrowseByCategory />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import "./ExploreItems.css";
 
 const ExploreItems = () => {
@@ -10,8 +13,9 @@ const ExploreItems = () => {
   const [filter, setFilter] = useState("");
 
   const fetchData = async (filterOption) => {
-    setLoading(true); 
-    let apiUrl = "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
+    setLoading(true);
+    let apiUrl =
+      "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
     if (filterOption) {
       apiUrl += `?filter=${filterOption}`;
     }
@@ -19,16 +23,17 @@ const ExploreItems = () => {
     try {
       const response = await fetch(apiUrl);
       const result = await response.json();
-      setData(result); 
+      setData(result);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData(filter);
+    AOS.init({ duration: 800, easing: "ease-in-out", once: true });
   }, [filter]);
 
   useEffect(() => {
@@ -36,7 +41,10 @@ const ExploreItems = () => {
       const interval = setInterval(() => {
         const updatedTimeLeft = data.reduce((acc, item) => {
           const remainingTime = item.expiryDate - new Date().getTime();
-          acc[item.id] = remainingTime > 0 ? calculateTimeLeft(remainingTime) : "Expired";
+          acc[item.id] =
+            remainingTime > 0
+              ? calculateTimeLeft(remainingTime)
+              : "Expired";
           return acc;
         }, {});
         setTimeLeft(updatedTimeLeft);
@@ -59,12 +67,12 @@ const ExploreItems = () => {
 
   const handleFilterChange = (event) => {
     const newFilter = event.target.value;
-    setFilter(newFilter); 
-    setItemsToShow(8); 
+    setFilter(newFilter);
+    setItemsToShow(8);
   };
 
   const SkeletonLoader = () => (
-    <div className="nft__item skeleton-card">
+    <div className="nft__item skeleton-card" data-aos="fade">
       <div className="skeleton skeleton-image"></div>
       <div className="skeleton skeleton-title"></div>
       <div className="skeleton skeleton-subtitle"></div>
@@ -98,11 +106,12 @@ const ExploreItems = () => {
         </select>
       </div>
 
-      {data.slice(0, itemsToShow).map((item) => (
+      {data.slice(0, itemsToShow).map((item, index) => (
         <div
           key={item.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
           style={{ display: "block", backgroundSize: "cover" }}
+          data-aos="fade"
         >
           <div className="nft__item">
             <div className="author_list_pp">
@@ -116,8 +125,16 @@ const ExploreItems = () => {
                   src={item.authorImage}
                   alt={`Author ${item.authorId}`}
                 />
+                <img
+                  className="lazy"
+                  src={item.authorImage}
+                  alt={`Author ${item.authorId}`}
+                />
                 <i className="fa fa-check"></i>
               </Link>
+            </div>
+            <div className="de_countdown">
+              {timeLeft[item.id] || "Calculating..."}
             </div>
             <div className="de_countdown">
               {timeLeft[item.id] || "Calculating..."}
@@ -154,8 +171,10 @@ const ExploreItems = () => {
                 <h4>{item.title}</h4>
               </Link>
               <div className="nft__item_price">{item.price} ETH</div>
+              <div className="nft__item_price">{item.price} ETH</div>
               <div className="nft__item_like">
                 <i className="fa fa-heart"></i>
+                <span>{item.likes}</span>
                 <span>{item.likes}</span>
               </div>
             </div>
@@ -168,6 +187,7 @@ const ExploreItems = () => {
             id="loadmore"
             className="btn-main lead"
             onClick={loadMoreItems}
+            data-aos="fade"
           >
             Load more
           </button>
