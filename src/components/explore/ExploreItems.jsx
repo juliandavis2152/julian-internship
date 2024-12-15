@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./ExploreItems.css";
 
+const ExploreItems = ({ items }) => {
 const ExploreItems = () => {
   const [data, setData] = useState([]);
   const [timeLeft, setTimeLeft] = useState({});
@@ -97,8 +98,7 @@ const ExploreItems = () => {
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-
-      {data.slice(0, itemsToShow).map((item) => (
+      {items.map((item) => (
         <div
           key={item.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
@@ -120,7 +120,7 @@ const ExploreItems = () => {
               </Link>
             </div>
             <div className="de_countdown">
-              {timeLeft[item.id] || "Calculating..."}
+              {new Date(item.expiryDate).toLocaleTimeString()} left
             </div>
 
             <div className="nft__item_wrap">
