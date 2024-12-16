@@ -124,11 +124,6 @@ const ExploreItems = () => {
                   src={item.authorImage}
                   alt={`Author ${item.authorId}`}
                 />
-                <img
-                  className="lazy"
-                  src={item.authorImage}
-                  alt={`Author ${item.authorId}`}
-                />
                 <i className="fa fa-check"></i>
               </Link>
             </div>
